@@ -7,6 +7,8 @@
         public string? ShortDescription { get; set; }
         public int TypeId { get; set; }
         public int StatusId { get; set; }
+        public int OwnerId { get; set; }
+        public User Owner { get; set; } = null!;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }

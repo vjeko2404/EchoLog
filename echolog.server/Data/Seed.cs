@@ -18,7 +18,7 @@ namespace echolog.server.Data
             {
                 Id = 1,
                 Username = "admin",
-                PasswordHash = "M3qgYDEQ1OmdTA3/24TK54YyFEiGizGtq5KTYdgvptQ=",
+                PasswordHash = "$2a$12$Uohw69joY3ac1DWKqD.wEuTp00Z4Y3a78HtEqYHraAwLPKdzcmHwm",
                 RoleId = 1,
                 CreatedAt = DateTime.UtcNow
             });
