@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "echolog.server", "echolog.server\echolog.server.csproj", "{2CA3B58A-C892-45AE-BDB8-2F0B2C0B3D68}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "echolog.client", "echolog.client\echolog.client.esproj", "{D1467459-ABE3-7265-C50B-CA9137DABE8A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CA3B58A-C892-45AE-BDB8-2F0B2C0B3D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CA3B58A-C892-45AE-BDB8-2F0B2C0B3D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CA3B58A-C892-45AE-BDB8-2F0B2C0B3D68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CA3B58A-C892-45AE-BDB8-2F0B2C0B3D68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1467459-ABE3-7265-C50B-CA9137DABE8A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE17D798-71E1-4BC0-8FF8-BDB94DA746B7}
+	EndGlobalSection
+EndGlobal

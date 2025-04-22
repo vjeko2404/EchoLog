@@ -1,0 +1,46 @@
+# Ignore build and bin/obj output
+**/bin/
+**/obj/
+**/out/
+
+# User-specific files
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Build artifacts
+*.dll
+*.exe
+*.app
+*.db
+*.log
+
+# Visual Studio generated
+*.vspscc
+*.vssscc
+*.cache
+*.csproj.user
+.vs/
+
+# Dotnet-generated
+*.db-shm
+*.db-wal
+*.pdb
+
+# Client-side (React/Vite/Node)
+echolog.client/node_modules/
+echolog.client/.next/
+echolog.client/.turbo/
+echolog.client/dist/
+echolog.client/build/
+
+# Environment/Secrets
+*.env
+secrets.json
+*.pem
+
+# Misc
+*.DS_Store
+Thumbs.db
+*.http
