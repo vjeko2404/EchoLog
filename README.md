@@ -1,12 +1,9 @@
 # EchoLog
-Self-hosted project logbook and technical memory engine. Tracks systems, modules, fixes, devices, and architecture without cloud dependency.
-
-# EchoLog
 
 **EchoLog** is a self-hosted, low-footprint project memory engine built in .NET 8.  
 It captures systems, modules, fixes, devices, and operational notes in a structured, queryable format—optimized for personal engineering workflows, not corporate bloat.
 
-## 🔧 Tech Stack
+## Tech Stack
 
 - **Backend**: .NET 8 Minimal API + SQLite
 - **Frontend**: React (WIP)
@@ -14,7 +11,7 @@ It captures systems, modules, fixes, devices, and operational notes in a structu
 - **Auth**: Local-only, role-based access (RBAC-ready)
 - **Config**: Stored in DB—no `.env`, no external secrets
 
-## ⚙️ Key Features
+## Key Features
 
 - Structured project model: types, statuses, notes, files
 - Local-first: all data, including config, stored inside SQLite
@@ -22,7 +19,7 @@ It captures systems, modules, fixes, devices, and operational notes in a structu
 - Optional file upload per project
 - Role-based user model (`admin`, `user`, extensible)
 
-## 🚀 Roadmap
+## Roadmap
 
 - [x] Backend model + DB architecture
 - [x] Seeded roles, settings, user auth
@@ -31,8 +28,7 @@ It captures systems, modules, fixes, devices, and operational notes in a structu
 - [ ] Export/snapshot features
 - [ ] Pi deployment script
 
-## 📜 License
-
+## License
 MIT License — you break it, you fix it.
 
 ---
