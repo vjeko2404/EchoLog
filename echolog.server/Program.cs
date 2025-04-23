@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+DotNetEnv.Env.Load();
 var corsOrigin = Environment.GetEnvironmentVariable("CORS_ORIGIN");
 
 // ──────────────────────────────────────────────────────────────
