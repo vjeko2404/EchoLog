@@ -95,12 +95,9 @@ if (builder.Environment.IsDevelopment())
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenLocalhost(5000); // HTTP
-    serverOptions.ListenLocalhost(5001, listenOptions =>
-    {
-        listenOptions.UseHttps(); // HTTPS
-    });
+    serverOptions.ListenLocalhost(5000); // HTTP only
 });
+
 
 var app = builder.Build();
 
