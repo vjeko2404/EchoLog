@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//  !!!!! You need to add .env inside the echolog.clien with --> VITE_API_URL=https://localhost:5000/api or domain name if you are using one !!!!!
+//  !!!!! You need to add .env inside the echolog.clien with --> VITE_API_URL=http://localhost:5000/api or domain name if you are using one !!!!!
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {

@@ -10,6 +10,10 @@
 *.suo
 *.sln
 
+# .env files (handled locally per env)
+echolog.client/.env
+echolog.server/.env
+
 # Uploads
 echolog.server/Uploads/
 

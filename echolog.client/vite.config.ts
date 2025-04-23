@@ -1,36 +1,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import fs from 'fs';
-import path from 'path';
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
+import dotenv from 'dotenv';
 
-// Force dev-time backend URL (proxy only used in dev mode)
-const backendUrl = 'https://localhost:5000';
+// Load .env manually because Vite doesn't do it in config
+dotenv.config();
 
+const backendUrl = process.env.VITE_API_URL;
 const isDev = process.env.NODE_ENV !== 'production';
 
-// mkcert - install
-// mkcert - key - file localhost - key.pem - cert - file localhost.pem localhost
-// SSL certificates (for Vite HTTPS)
-const certPath = path.resolve(__dirname, 'certs');
-const keyPath = path.join(certPath, 'localhost-key.pem');
-const certPathFull = path.join(certPath, 'localhost.pem');
-
-let https = undefined;
-if (fs.existsSync(keyPath) && fs.existsSync(certPathFull)) {
-    https = {
-        key: fs.readFileSync(keyPath),
-        cert: fs.readFileSync(certPathFull),
-    };
+if (!process.env.VITE_PORT) {
+    throw new Error("VITE_PORT is not defined in .env");
 }
 
 export default defineConfig({
     plugins: [react(), tailwindcss()],
     server: {
         host: true,
-        port: isDev ? 52664 : 5001, // dev = 52664, prod = 5001 (or serve ignores this anyway)
+        port: Number(process.env.VITE_PORT),
         strictPort: true,
-        ...(isDev && { https }), // Only include https certs during dev
         proxy: isDev
             ? {
                 '/api': {

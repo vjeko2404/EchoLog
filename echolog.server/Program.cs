@@ -10,6 +10,8 @@ using DotNetEnv;
 var builder = WebApplication.CreateBuilder(args);
 DotNetEnv.Env.Load();
 var corsOrigin = Environment.GetEnvironmentVariable("CORS_ORIGIN");
+var host = Environment.GetEnvironmentVariable("API_HOST") ?? "localhost";
+var port = Environment.GetEnvironmentVariable("API_PORT") ?? "5000";
 
 // ──────────────────────────────────────────────────────────────
 // Configuration
@@ -104,7 +106,7 @@ if (builder.Environment.IsDevelopment())
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenLocalhost(5000); // HTTP only
+    serverOptions.ListenLocalhost(int.Parse(port)); // stays HTTP
 });
 
 
@@ -118,10 +120,6 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     db.Database.Migrate();
-
-    var portSetting = db.AppSettings.FirstOrDefault(s => s.Key == "ApiPort");
-    var port = portSetting?.Value ?? "5000";
-    app.Urls.Add($"http://*:{port}");
 }
 
 // ──────────────────────────────────────────────────────────────

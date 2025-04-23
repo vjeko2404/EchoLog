@@ -42,20 +42,6 @@ Deployment-ready via internal AppSettings. No .env files. No container secrets.
 **Files**: Server-stored files with category mapping and access constraints
 **Hosting**: Compatible with Windows, Linux, and Raspberry Pi environments
 
-### Repository Structure
-
-echolog
-├── echolog.server         # .NET 8 Backend
-│   ├── Controllers        # RESTful APIs with full RBAC
-│   ├── DTOs               # Data transfer contracts
-│   ├── Models             # EF Core entities
-│   └── Services           # Auth, Context, File Access
-│
-├── echolog.client         # React Frontend
-│   ├── pages              # Role-secured dashboard, admin, detail views
-│   ├── components         # Tabs, file tables, forms, JWT hooks
-│   └── api.ts             # Axios instance with token injection
-
 ### Roadmap
 
 - [x] Project CRUD with ownership enforcement
@@ -84,11 +70,12 @@ If it was once true, it should still be queryable. That’s the core.
 
 - [Overview](docs/overview.md): Provides a comprehensive overview of the EchoLog system, its architecture, and core objectives.
 - [Changelog](docs/changelog.md): Details the version history and significant changes made to the EchoLog project.
+- [Installation](docs/installation.md): Step-by-step guide for setting up EchoLog, including dependency checks, configuration prompts, service installation, and startup procedures.
 
 ## License
 
 MIT License — This software is provided "as is," and the user assumes all responsibility for its use and any modifications.
 
----
+--------------------------------------------------------------------------------------------------------------------------
 
-*Created by [Vjeko](https://github.com/vjeko2404) — born from the need to control complexity, eliminate noise, and build a personal engineering system that actually remembers what matters built for engineers who prefer memory over meetings*
+*Created by [Vjeko](https://github.com/vjeko2404) — engineered for those who solve problems before meetings can be scheduled. EchoLog exists to control complexity, silence the noise, and build systems that remember what matters—because real engineers automate, not annotate*
