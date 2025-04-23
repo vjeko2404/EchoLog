@@ -12,6 +12,9 @@
 # Uploads
 echolog.server/Uploads/
 
+# Scripts
+git-echolog.sh
+
 # Build artifacts
 *.dll
 *.exe

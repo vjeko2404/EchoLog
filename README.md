@@ -1,31 +1,84 @@
-# EchoLog
+## EchoLog
 
-**EchoLog** is a self-hosted, low-footprint project memory engine developed using .NET 8. It is designed to capture and organize critical information related to systems, modules, fixes, devices, and operational notes in a structured and queryable format. Unlike conventional, feature-heavy project management tools, EchoLog is specifically optimized for personal engineering workflows, prioritizing efficiency and control.
+EchoLog is a self-hosted, role-secure project memory engine designed for engineers, tinkerers, and builders who prefer control over complexity. Developed in .NET 8 with a tightly integrated React frontend, it enables personal or small-team project tracking with full file management, detailed notes, and RBAC (Role-Based Access Control).
 
-## Key Features
+It’s not a PM tool. It doesn’t sync with Slack. And it won’t pretend your chaos is collaborative. EchoLog is for when the system must be yours—local, fast, traceable, and surgical.
 
-- **Structured Project Model:** Organizes projects with defined types, statuses, associated notes, and file attachments.
-- **Local-First Architecture:** All application data, including configuration, is persistently stored within a local SQLite database, ensuring data privacy and portability.
-- **Dynamic API Port Configuration:** The API port can be configured directly through the database (`AppSetting`), eliminating the need for external configuration files or secret management.
-- **Optional File Upload:** Enables the attachment of relevant files to individual projects for comprehensive documentation.
-- **Role-Based Access Control (RBAC):** Implements a local-only user authentication system with predefined roles (`admin`, `user`, extensible) to manage access levels.
+### Key Features
 
-## Tech Stack
+**Structured Project Lifecycle**
 
-- **Backend:** .NET 8 Minimal API + SQLite for robust and efficient data management.
-- **Frontend:** React (Work in Progress) for a dynamic and responsive user interface.
-- **Hosting Compatibility:** Designed for deployment on various platforms, including Raspberry Pi, Linux, and Windows.
-- **Authentication:** Local user management with role-based access control, ensuring secure access to project data.
-- **Configuration:** Database-driven configuration via the `AppSetting` entity, simplifying deployment and management.
+Track systems, devices, modules, or experiments with typed status, ownership, notes, and versioned metadata.
 
-## Roadmap
+**Role-Based Access Control (RBAC)**
 
-- [x] Backend model and database architecture established.
-- [x] Core user roles, application settings, and user authentication implemented.
-- [ ] Development of Project CRUD (Create, Read, Update, Delete) API endpoints.
-- [ ] Creation of the frontend user interface using React.
-- [ ] Implementation of export and snapshot features for data backup and sharing.
-- [ ] Development of a deployment script optimized for Raspberry Pi environments.
+Admins manage users and projects. Users own their space. Observers see everything—without touching a thing.
+
+**Responsive UI Layer**
+
+Tab-based navigation for summary, detail, notes, and files. Zero-fluff. Full context. Fast switching.
+
+**Secure File Management**
+
+Drag-and-drop multi-file uploads, metadata tagging, categorization, download (ZIP or single), and batch deletion.
+
+**Admin Console**
+
+Manage users, reassign project ownership, edit file categories, and live-update backend config—all via browser.
+
+**Local-First Architecture**
+
+SQLite as the single source of truth. No cloud. No external services. Fully offline capable.
+
+**API Port Binding via Database**
+
+Deployment-ready via internal AppSettings. No .env files. No container secrets.
+
+### Tech Stack
+
+**Backend**: .NET 8 Minimal API, SQLite, Entity Framework Core
+**Frontend**: React + TypeScript + TailwindCSS
+**Auth**: Local-only JWT, bcrypt-hashed credentials, role-aware claims
+**Files**: Server-stored files with category mapping and access constraints
+**Hosting**: Compatible with Windows, Linux, and Raspberry Pi environments
+
+### Repository Structure
+
+echolog
+├── echolog.server         # .NET 8 Backend
+│   ├── Controllers        # RESTful APIs with full RBAC
+│   ├── DTOs               # Data transfer contracts
+│   ├── Models             # EF Core entities
+│   └── Services           # Auth, Context, File Access
+│
+├── echolog.client         # React Frontend
+│   ├── pages              # Role-secured dashboard, admin, detail views
+│   ├── components         # Tabs, file tables, forms, JWT hooks
+│   └── api.ts             # Axios instance with token injection
+
+### Roadmap
+
+- [x] Project CRUD with ownership enforcement
+- [x] Auth system with admin, user, and observer roles
+- [x] File upload with drag-and-drop + metadata
+- [x] Batch file download, batch deletion
+- [x] Full frontend with role-reactive layout
+- [x] App settings editor via UI
+- [x] Admin-controlled project ownership reassignment
+- [ ] Export/snapshot system (TBD)
+- [ ] Audit logging layer (optional future)
+
+### Live Preview
+
+Note: EchoLog is designed for LAN or isolated usage. It is not intended for open/public deployment unless wrapped with external auth and proxy layers.
+
+### Philosophy
+
+EchoLog is not another SaaS wrapper. It doesn’t track team velocity.
+
+It tracks projects that matter. Systems with state. Decisions with memory.
+
+If it was once true, it should still be queryable. That’s the core.
 
 ## Documentation
 
@@ -38,4 +91,4 @@ MIT License — This software is provided "as is," and the user assumes all resp
 
 ---
 
-*Created by [Vjeko](https://github.com/vjeko2404) — motivated by the need for a streamlined and focused solution for personal engineering knowledge management.*
+*Created by [Vjeko](https://github.com/vjeko2404) — born from the need to control complexity, eliminate noise, and build a personal engineering system that actually remembers what matters built for engineers who prefer memory over meetings*
