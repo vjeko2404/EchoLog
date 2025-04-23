@@ -95,11 +95,16 @@ if (builder.Environment.IsDevelopment())
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.ListenLocalhost(5000, listenOptions =>
-    {
-        listenOptions.UseHttps(); // Use dev cert
-    });
+    // Accept plain HTTP on port 5000 (Cloudflared talks to this)
+    serverOptions.ListenLocalhost(5000);
+
+    // If you want to keep HTTPS on a separate port (optional, not needed for Cloudflared):
+    // serverOptions.ListenLocalhost(5001, listenOptions =>
+    // {
+    //     listenOptions.UseHttps();
+    // });
 });
+
 
 var app = builder.Build();
 
