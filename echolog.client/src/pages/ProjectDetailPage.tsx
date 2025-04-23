@@ -6,7 +6,6 @@ import { useUser } from '../components/UserContext'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudArrowUp } from '@fortawesome/free-solid-svg-icons';
 
-
 type Tab = 'summary' | 'detail' | 'notes' | 'files' | 'edit';
 
 const ProjectDetailPage: React.FC = () => {
@@ -25,6 +24,7 @@ const ProjectDetailPage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<Tab>('summary');
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>('');
+    const { role, isAdmin } = useUser();
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
     const [categories, setCategories] = useState<ProjectFileCategory[]>([]);
@@ -35,9 +35,7 @@ const ProjectDetailPage: React.FC = () => {
         return filterCategoryId === 0
             ? files
             : files.filter(file => file.categoryId === filterCategoryId);
-    }, [files, filterCategoryId]);
-
-    const { role, isAdmin } = useUser();
+    }, [files, filterCategoryId]);    
 
     // --- Fetching Categories ---
     useEffect(() => {
@@ -122,7 +120,6 @@ const ProjectDetailPage: React.FC = () => {
         return <div className="text-center text-red-500 mt-10">{error || 'Project could not be loaded.'}</div>;
     }
 
-
     // --- Sub-Components for Tabs ---
     const SummaryTab: React.FC<{ project: Project }> = ({ project }) => (
         <div className="bg-neutral-800/50 p-6 rounded-lg shadow-md border border-neutral-700 space-y-4">
@@ -167,7 +164,6 @@ const ProjectDetailPage: React.FC = () => {
                 )}
             </dl>
         </div>
-
     );
 
     const EditProjectTab: React.FC<{
@@ -197,7 +193,6 @@ const ProjectDetailPage: React.FC = () => {
             e.preventDefault();
             onSave(formData);
         };
-
 
         return (
             <div className="bg-neutral-800/50 p-6 rounded-lg shadow-md border border-neutral-700 space-y-4">
@@ -299,20 +294,19 @@ const ProjectDetailPage: React.FC = () => {
 
     const updateDetail = (data: Partial<ProjectDetail>) => {
         setDetail(prev => {
-            if (!prev) return data as ProjectDetail; // fallback if no previous data
+            if (!prev) return data as ProjectDetail;
             return { ...prev, ...data };
         });
     };
 
 
     const DetailTab: React.FC<{ initialDetail: ProjectDetail | null, projectId: number, onUpdate: (data: Partial<ProjectDetail>) => void }> = ({ initialDetail, projectId, onUpdate }) => {
-        const [isEditing, setIsEditing] = useState(!initialDetail); // Start editing if no details exist
+        const [isEditing, setIsEditing] = useState(!initialDetail);
         const [formData, setFormData] = useState<Partial<ProjectDetail>>(initialDetail || { projectId });
 
-        useEffect(() => {
-            // Update form if initialDetail changes (e.g., after initial fetch)
+        useEffect(() => {  
             setFormData(initialDetail || { projectId });
-            setIsEditing(!initialDetail); // Reset editing state based on presence of details
+            setIsEditing(!initialDetail);
         }, [initialDetail, projectId]);
 
 
@@ -321,30 +315,25 @@ const ProjectDetailPage: React.FC = () => {
         };
 
         const handleSubmit = async (e: FormEvent) => {
-            e.preventDefault();
-            // Determine if creating or updating
-            if (initialDetail) {
-                // Updating existing details via PUT
+            e.preventDefault(); 
+            if (initialDetail) {   
                 onUpdate(formData);
-                setIsEditing(false); // Exit edit mode after saving
-            } else {
-                // Creating new details via POST
+                setIsEditing(false);
+            } else {             
                 try {
                     const response = await api.post<ProjectDetail>('/project-details', { ...formData, projectId });
-                    onUpdate(response.data); // Pass created data back up
-                    setIsEditing(false); // Exit edit mode
+                    onUpdate(response.data); 
+                    setIsEditing(false);
                 } catch (err: any) {
                     console.error("Failed to create details:", err);
                     if (err.response && err.response.status === 409) {
-                        alert("Error: Details already exist for this project. Try editing instead.");
-                        // Optionally fetch existing details here
+                        alert("Error: Details already exist for this project. Try editing instead.");                   
                     } else {
                         alert("Error creating project details.");
                     }
                 }
             }
         };
-
 
         if (!isEditing && initialDetail) {
             return (
@@ -430,9 +419,7 @@ const ProjectDetailPage: React.FC = () => {
                 </form>
             )
         );
-
     };
-
 
     const NotesTab: React.FC<{ notes: ProjectNote[], onAdd: (text: string) => void, onDelete: (id: number) => void }> = ({ notes, onAdd, onDelete }) => {
         const [newNote, setNewNote] = useState('');
@@ -497,7 +484,7 @@ const ProjectDetailPage: React.FC = () => {
         const formData = new FormData();
 
         for (const file of files) {
-            formData.append('files', file); // multiple entries with the same key
+            formData.append('files', file);
         }
 
         formData.append('projectId', project.id.toString());
@@ -553,7 +540,7 @@ const ProjectDetailPage: React.FC = () => {
                 )
             );
             setFiles(prev => prev.filter(f => !selectedFileIds.includes(f.id)));
-            setSelectedFileIds([]); // clear selection
+            setSelectedFileIds([]);
         } catch (err) {
             console.error("Failed to delete selected files:", err);
             alert("Error deleting one or more files.");
@@ -609,7 +596,6 @@ const ProjectDetailPage: React.FC = () => {
         = ({ files, onUpload, onDelete }) => {
             const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
             const [description, setDescription] = useState('');
-
 
             return (
                 <div className="bg-neutral-800/50 p-6 rounded-lg shadow-md border border-neutral-700 space-y-4">
@@ -746,7 +732,6 @@ const ProjectDetailPage: React.FC = () => {
                         </div>
                     )}
 
-
                     {/* File Table */}
                     <div className="hidden sm:block overflow-x-auto">
                         <table className="w-full text-sm text-left text-neutral-300 border border-neutral-500">
@@ -864,7 +849,6 @@ const ProjectDetailPage: React.FC = () => {
             );
         };
 
-
     // --- Main Render ---
     return (
         <div className="container mx-auto">
@@ -887,7 +871,6 @@ const ProjectDetailPage: React.FC = () => {
                         </button>
                     ))}
                 </nav>
-
             </div>
 
             {/* Tab Content */}

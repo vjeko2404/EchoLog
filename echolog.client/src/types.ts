@@ -65,11 +65,11 @@ export interface Project {
     title: string;
     shortDescription?: string | null;
     typeId: number;
-    type: string; // <-- NEW
+    type: string; 
     statusId: number;
-    status: string; // <-- NEW
+    status: string;
     ownerId: number;
-    ownerUsername: string; // <-- NEW
+    ownerUsername: string;
     createdAt: string;
     updatedAt?: string | null;
     detail?: ProjectDetail | null;
@@ -94,5 +94,5 @@ export interface ProjectFileCategory {
 export interface CollapsibleSectionProps {
     title: string;
     children: React.ReactNode;
-    defaultOpen?: boolean; // optional now
+    defaultOpen?: boolean;
 }

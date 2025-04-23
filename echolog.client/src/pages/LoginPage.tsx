@@ -1,6 +1,6 @@
 import React, { useState, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../api'; // Use the configured Axios instance
+import api from '../api'; 
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState<string>('');
@@ -24,20 +24,19 @@ const LoginPage: React.FC = () => {
         setError('');
         setLoading(true);
 
-        try {
-            // Call the login endpoint defined in AuthController.cs
+        try {           
             const response = await api.post('/auth/login', { username, password });
 
             if (response.data && response.data.token && response.data.expires) {
                 localStorage.setItem('jwt_token', response.data.token);
                 localStorage.setItem('jwt_expires', response.data.expires);
-                navigate('/dashboard'); // Redirect on success
+                navigate('/dashboard'); 
             } else {
                 setError('Login failed: Invalid response from server.');
             }
         } catch (err: any) {
             if (err.response && err.response.status === 401) {
-                setError('Login failed: Invalid username or password.'); // From backend
+                setError('Login failed: Invalid username or password.');
             } else if (err.request) {
                 setError('Login failed: No response from server. Please try again later.');
             }
@@ -52,9 +51,7 @@ const LoginPage: React.FC = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-login-gradient px-4">
-
             <div className="bg-neutral-800 p-8 rounded-xl shadow-2xl w-full max-w-md animate-fade-in glow-box">
-
 
                 <div className="flex flex-col items-center mb-6">
                     <img
@@ -62,7 +59,7 @@ const LoginPage: React.FC = () => {
                         alt="EchoLog Logo"
                         className="w-16 h-16 mb-2 rounded"
                     />
-                    <h1 className="text-3xl font-bold text-neutral-100 tracking-tight">Welcome to EchoLog</h1>
+                    <h1 className="text-3xl font-bold text-neutral-100 tracking-tight">EchoLog</h1>
                     <p className="text-sm text-neutral-400 mt-1">Access restricted. Authorized users only.</p>
                 </div>
 
@@ -109,7 +106,6 @@ const LoginPage: React.FC = () => {
                 </form>
             </div>
         </div>
-
     );
 };
 

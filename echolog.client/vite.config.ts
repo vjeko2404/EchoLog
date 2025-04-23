@@ -7,6 +7,8 @@ import tailwindcss from '@tailwindcss/vite'
 // Force dev-time backend URL (proxy only used in dev mode)
 const backendUrl = 'https://localhost:5000';
 
+// mkcert - install
+// mkcert - key - file localhost - key.pem - cert - file localhost.pem localhost
 // SSL certificates (for Vite HTTPS)
 const certPath = path.resolve(__dirname, 'certs');
 const https = {

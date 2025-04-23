@@ -263,7 +263,6 @@ const AdminPanel: React.FC = () => {
             {error && <p className="text-red-500 bg-red-900 border border-red-700 p-3 rounded">{error}</p>}
 
             {/* User Management Section */}
-
             <section className="bg-neutral-700 p-6 rounded-lg shadow">
 
                 <div className="flex justify-between items-center mb-4">
@@ -326,7 +325,7 @@ const AdminPanel: React.FC = () => {
                                             <td className="py-2 px-4">{user.roleName || `Role ID: ${user.roleId}`}</td>
                                             <td className="py-2 px-4">{new Date(user.createdAt).toLocaleString()}</td>
                                             <td className="py-2 px-4 space-x-2">
-                                                {/* <button className="text-blue-400 hover:text-blue-300 text-sm">Edit</button> */}
+
                                                 <button
                                                     onClick={() => handleDeleteUser(user.id, user.username)}
                                                     className="bg-red-700 hover:bg-red-800 text-white text-xs px-3 py-1 rounded shadow-sm transition"
@@ -364,7 +363,6 @@ const AdminPanel: React.FC = () => {
                                 </div>
                             ))}
                         </div>
-
                     </div>
                 )}
             </section>

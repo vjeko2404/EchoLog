@@ -41,9 +41,6 @@ const Topbar: React.FC = () => {
                 </div>
             </div>
         </nav>
-
-
-
     );
 };
 
@@ -58,7 +55,7 @@ const Layout: React.FC = () => {
             localStorage.removeItem('jwt_token');
             localStorage.removeItem('jwt_expires');
             navigate('/login');
-        }  
+        }
     }, [navigate]);
 
     return (
@@ -74,7 +71,7 @@ const Layout: React.FC = () => {
             </div>
         </UserProvider>
     );
-;
+    ;
 };
 
 export default Layout;

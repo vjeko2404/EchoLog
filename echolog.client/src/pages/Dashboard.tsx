@@ -43,7 +43,6 @@ const Dashboard: React.FC = () => {
         return () => mediaQuery.removeEventListener('change', handleResize);
     }, []);
 
-
     useEffect(() => {
         const fetchAll = async () => {
             try {
@@ -202,8 +201,6 @@ const Dashboard: React.FC = () => {
                             Create
                         </button>
                     </div>
-
-
                     {formError && (
                         <p className="mt-3 text-sm text-red-400">{formError}</p>
                     )}
@@ -243,7 +240,6 @@ const Dashboard: React.FC = () => {
                                 <FontAwesomeIcon icon={faTable} />
                             </button>
                         </div>
-
                     </div>
                 )}
 

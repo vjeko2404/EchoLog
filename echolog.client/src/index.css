@@ -15,7 +15,7 @@
 .animate-fade-in-slide {
     animation: fade-in-slide 0.3s ease-out;
 }
-/* Optional smoother easing */
+/* smoother easing */
 .tooltip-enter {
     transition: opacity 0.5s ease-out, transform 0.5s ease-out 1s;
 }
