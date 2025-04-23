@@ -1,15 +1,12 @@
 import axios from 'axios';
 
-// Dynamic base URL switching based on mode
-const API_BASE_URL = import.meta.env.MODE === 'development'
-    ? '/api' 
-    : '/api'; 
-
+//  !!!!! You need to add .env inside the echolog.clien with --> VITE_API_URL=https://localhost:5000/api or domain name if you are using one !!!!!
 const api = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Content-Type': 'application/json',
     },
+    withCredentials: true
 });
 
 api.interceptors.request.use(
