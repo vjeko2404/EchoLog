@@ -27,7 +27,7 @@ chmod +x install.sh
 
 # 4. Run the install script (this will prompt for settings and install everything)
 sudo ./install.sh
-
+```
 What the script does
 The install.sh script performs the following actions:
 
@@ -45,6 +45,7 @@ EchoLog frontend will be running at http://localhost:<CLIENT_PORT>.
 Logs are stored in /var/log/echolog/.
 You can manage the application services with the following systemctl commands:
 
+```bash
 # Start the services
 sudo systemctl start echolog-backend
 sudo systemctl start echolog-frontend
@@ -56,6 +57,7 @@ sudo systemctl status echolog-frontend
 # View logs
 cat /var/log/echolog/backend.log
 cat /var/log/echolog/frontend.log
+```
 
 Troubleshooting
 If you encounter an error during installation or startup:
