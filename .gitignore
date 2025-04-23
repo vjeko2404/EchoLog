@@ -9,6 +9,9 @@
 *.user
 *.suo
 
+# Uploads
+echolog.server/Uploads/
+
 # Build artifacts
 *.dll
 *.exe

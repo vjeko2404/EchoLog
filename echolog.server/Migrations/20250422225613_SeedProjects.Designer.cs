@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using echolog.server.Data;
 
@@ -10,9 +11,11 @@ using echolog.server.Data;
 namespace echolog.server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250422225613_SeedProjects")]
+    partial class SeedProjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -41,12 +44,6 @@ namespace echolog.server.Migrations
                             Id = 1,
                             Key = "BackendPort",
                             Value = "5000"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Key = "DatabasePath",
-                            Value = "D:/Projects/EchoLog/echolog.server/bin/Debug/net8.0/echolog.db"
                         });
                 });
 
@@ -142,9 +139,6 @@ namespace echolog.server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -164,56 +158,9 @@ namespace echolog.server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectFiles");
-                });
-
-            modelBuilder.Entity("echolog.server.Models.ProjectFileCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("ProjectFileCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Documentation"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Screenshots"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Source"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Builds"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Other"
-                        });
                 });
 
             modelBuilder.Entity("echolog.server.Models.ProjectNote", b =>
@@ -272,11 +219,6 @@ namespace echolog.server.Migrations
                         {
                             Id = 4,
                             Value = "Frozen"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Value = "Completed"
                         });
                 });
 
@@ -355,7 +297,7 @@ namespace echolog.server.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 4, 23, 12, 45, 8, 481, DateTimeKind.Utc).AddTicks(9617),
+                            CreatedAt = new DateTime(2025, 4, 22, 22, 56, 13, 176, DateTimeKind.Utc).AddTicks(1141),
                             PasswordHash = "$2a$12$Uohw69joY3ac1DWKqD.wEuTp00Z4Y3a78HtEqYHraAwLPKdzcmHwm",
                             RoleId = 1,
                             Username = "admin"
@@ -418,19 +360,11 @@ namespace echolog.server.Migrations
 
             modelBuilder.Entity("echolog.server.Models.ProjectFile", b =>
                 {
-                    b.HasOne("echolog.server.Models.ProjectFileCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("echolog.server.Models.Project", "Project")
                         .WithMany("Files")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Category");
 
                     b.Navigation("Project");
                 });

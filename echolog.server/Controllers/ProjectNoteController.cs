@@ -1,4 +1,5 @@
 ﻿using echolog.server.Data;
+using echolog.server.DTOs;
 using echolog.server.Models;
 using echolog.server.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ namespace echolog.server.Controllers
 {
     [ApiController]
     [Route("api/project-notes")]
-    [Authorize] // all actions require auth
+    [Authorize]
     public class ProjectNoteController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
@@ -23,7 +24,7 @@ namespace echolog.server.Controllers
 
         // GET /api/project-notes/5
         [HttpGet("{projectId}")]
-        public async Task<ActionResult<IEnumerable<ProjectNote>>> GetByProjectId(int projectId)
+        public async Task<ActionResult<IEnumerable<ProjectNoteDto>>> GetByProjectId(int projectId)
         {
             var project = await _db.Projects.AsNoTracking().FirstOrDefaultAsync(p => p.Id == projectId);
             if (project == null)
@@ -36,6 +37,13 @@ namespace echolog.server.Controllers
                 .Where(n => n.ProjectId == projectId)
                 .OrderByDescending(n => n.CreatedAt)
                 .AsNoTracking()
+                .Select(n => new ProjectNoteDto
+                {
+                    Id = n.Id,
+                    ProjectId = n.ProjectId,
+                    NoteText = n.NoteText,
+                    CreatedAt = n.CreatedAt
+                })
                 .ToListAsync();
 
             return Ok(notes);
@@ -44,31 +52,41 @@ namespace echolog.server.Controllers
         // POST /api/project-notes
         [HttpPost]
         [Authorize(Roles = "Admin,User")]
-        public async Task<ActionResult<ProjectNote>> Create(ProjectNote input)
+        public async Task<ActionResult<ProjectNoteDto>> Create(ProjectNoteCreateDto dto)
         {
-            var project = await _db.Projects.FindAsync(input.ProjectId);
+            var project = await _db.Projects.FindAsync(dto.ProjectId);
             if (project == null)
                 return BadRequest("Invalid ProjectId");
 
             if (!_ctx.IsAdmin && project.OwnerId != _ctx.UserId)
                 return Forbid();
 
-            input.CreatedAt = DateTime.UtcNow;
+            var note = new ProjectNote
+            {
+                ProjectId = dto.ProjectId,
+                NoteText = dto.NoteText,
+                CreatedAt = DateTime.UtcNow
+            };
 
-            _db.ProjectNotes.Add(input);
+            _db.ProjectNotes.Add(note);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetByProjectId), new { projectId = input.ProjectId }, input);
+            var responseDto = new ProjectNoteDto
+            {
+                Id = note.Id,
+                ProjectId = note.ProjectId,
+                NoteText = note.NoteText,
+                CreatedAt = note.CreatedAt
+            };
+
+            return CreatedAtAction(nameof(GetByProjectId), new { projectId = responseDto.ProjectId }, responseDto);
         }
 
         // PUT /api/project-notes/12
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,User")]
-        public async Task<IActionResult> Update(int id, ProjectNote input)
+        public async Task<IActionResult> Update(int id, ProjectNoteUpdateDto dto)
         {
-            if (id != input.Id)
-                return BadRequest("ID mismatch");
-
             var note = await _db.ProjectNotes.FindAsync(id);
             if (note == null)
                 return NotFound();
@@ -80,7 +98,7 @@ namespace echolog.server.Controllers
             if (!_ctx.IsAdmin && project.OwnerId != _ctx.UserId)
                 return Forbid();
 
-            note.NoteText = input.NoteText;
+            note.NoteText = dto.NoteText;
             await _db.SaveChangesAsync();
 
             return NoContent();

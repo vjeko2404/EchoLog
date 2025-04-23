@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using echolog.server.Data;
 
@@ -10,9 +11,11 @@ using echolog.server.Data;
 namespace echolog.server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250423025212_FixDefaultCategory")]
+    partial class FixDefaultCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -41,12 +44,6 @@ namespace echolog.server.Migrations
                             Id = 1,
                             Key = "BackendPort",
                             Value = "5000"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Key = "DatabasePath",
-                            Value = "D:/Projects/EchoLog/echolog.server/bin/Debug/net8.0/echolog.db"
                         });
                 });
 
@@ -272,11 +269,6 @@ namespace echolog.server.Migrations
                         {
                             Id = 4,
                             Value = "Frozen"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Value = "Completed"
                         });
                 });
 
@@ -355,7 +347,7 @@ namespace echolog.server.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 4, 23, 12, 45, 8, 481, DateTimeKind.Utc).AddTicks(9617),
+                            CreatedAt = new DateTime(2025, 4, 23, 2, 52, 12, 591, DateTimeKind.Utc).AddTicks(3105),
                             PasswordHash = "$2a$12$Uohw69joY3ac1DWKqD.wEuTp00Z4Y3a78HtEqYHraAwLPKdzcmHwm",
                             RoleId = 1,
                             Username = "admin"

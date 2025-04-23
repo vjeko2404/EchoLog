@@ -1,10 +1,32 @@
 import { defineConfig } from 'vite';
-import plugin from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react';
+import fs from 'fs';
+import path from 'path';
+import tailwindcss from '@tailwindcss/vite'
 
-// https://vitejs.dev/config/
+// Force dev-time backend URL (proxy only used in dev mode)
+const backendUrl = 'https://localhost:5000';
+
+// SSL certificates (for Vite HTTPS)
+const certPath = path.resolve(__dirname, 'certs');
+const https = {
+    key: fs.readFileSync(path.join(certPath, 'localhost-key.pem')),
+    cert: fs.readFileSync(path.join(certPath, 'localhost.pem')),
+};
+
 export default defineConfig({
-    plugins: [plugin()],
+    plugins: [react(), tailwindcss()],
     server: {
+        host: true,
         port: 52664,
+        strictPort: true,
+        https,
+        proxy: {
+            '/api': {
+                target: backendUrl,
+                changeOrigin: true,
+                secure: false
+            }
+        }
     }
-})
+});

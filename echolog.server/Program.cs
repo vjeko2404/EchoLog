@@ -93,6 +93,14 @@ if (builder.Environment.IsDevelopment())
     });
 }
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenLocalhost(5000, listenOptions =>
+    {
+        listenOptions.UseHttps(); // Use dev cert
+    });
+});
+
 var app = builder.Build();
 
 // ──────────────────────────────────────────────────────────────

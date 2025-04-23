@@ -21,6 +21,7 @@ namespace echolog.server.Data
         public DbSet<ProjectType> ProjectTypes { get; set; }
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<ProjectFileCategory> ProjectFileCategories { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,6 +52,10 @@ namespace echolog.server.Data
             // Unique Username
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<ProjectFileCategory>()
+                .HasIndex(c => c.Name)
                 .IsUnique();
 
             // Defer all seeding to external class

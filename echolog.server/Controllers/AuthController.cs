@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using echolog.server.DTOs;
 
 namespace echolog.server.Controllers
 {
@@ -51,11 +52,5 @@ namespace echolog.server.Controllers
                 expires = expires
             });
         }
-    }
-
-    public class AuthRequestDto
-    {
-        public required string Username { get; set; }
-        public required string Password { get; set; }
     }
 }

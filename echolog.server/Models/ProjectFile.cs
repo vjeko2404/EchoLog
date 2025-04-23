@@ -8,6 +8,8 @@
         public required string FileName { get; set; }
         public required string FilePath { get; set; } // Can be relative, local, remote
         public string? Description { get; set; }
+        public int CategoryId { get; set; }
+        public ProjectFileCategory Category { get; set; } = null!;
 
         public DateTime UploadedAt { get; set; } = DateTime.UtcNow;
 

@@ -1,4 +1,5 @@
 ﻿using echolog.server.Data;
+using echolog.server.DTOs;
 using echolog.server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,7 @@ namespace echolog.server.Controllers
 {
     [ApiController]
     [Route("api/project-types")]
-    [Authorize] // All access requires auth
+    [Authorize]
     public class ProjectTypeController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
@@ -19,16 +20,33 @@ namespace echolog.server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProjectType>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProjectTypeDto>>> GetAll()
         {
-            var types = await _db.ProjectTypes.AsNoTracking().ToListAsync();
+            var types = await _db.ProjectTypes
+                .AsNoTracking()
+                .Select(t => new ProjectTypeDto
+                {
+                    Id = t.Id,
+                    Value = t.Value
+                })
+                .ToListAsync();
+
             return Ok(types);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProjectType>> GetById(int id)
+        public async Task<ActionResult<ProjectTypeDto>> GetById(int id)
         {
-            var type = await _db.ProjectTypes.FindAsync(id);
+            var type = await _db.ProjectTypes
+                .AsNoTracking()
+                .Where(t => t.Id == id)
+                .Select(t => new ProjectTypeDto
+                {
+                    Id = t.Id,
+                    Value = t.Value
+                })
+                .FirstOrDefaultAsync();
+
             if (type == null)
                 return NotFound();
 
@@ -37,23 +55,34 @@ namespace echolog.server.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ProjectType>> Create(ProjectType input)
+        public async Task<ActionResult<ProjectTypeDto>> Create(ProjectTypeCreateDto dto)
         {
-            _db.ProjectTypes.Add(input);
+            var type = new ProjectType
+            {
+                Value = dto.Value
+            };
+
+            _db.ProjectTypes.Add(type);
             await _db.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = input.Id }, input);
+
+            var responseDto = new ProjectTypeDto
+            {
+                Id = type.Id,
+                Value = type.Value
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = responseDto.Id }, responseDto);
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Update(int id, ProjectType input)
+        public async Task<IActionResult> Update(int id, ProjectTypeUpdateDto dto)
         {
-            if (id != input.Id) return BadRequest();
-
             var existing = await _db.ProjectTypes.FindAsync(id);
-            if (existing == null) return NotFound();
+            if (existing == null)
+                return NotFound();
 
-            existing.Value = input.Value;
+            existing.Value = dto.Value;
             await _db.SaveChangesAsync();
 
             return NoContent();
@@ -64,7 +93,8 @@ namespace echolog.server.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var existing = await _db.ProjectTypes.FindAsync(id);
-            if (existing == null) return NotFound();
+            if (existing == null)
+                return NotFound();
 
             _db.ProjectTypes.Remove(existing);
             await _db.SaveChangesAsync();

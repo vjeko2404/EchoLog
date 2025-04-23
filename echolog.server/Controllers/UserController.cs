@@ -1,4 +1,5 @@
 ﻿using echolog.server.Data;
+using echolog.server.DTOs;
 using echolog.server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,12 +22,20 @@ namespace echolog.server.Controllers
 
         // GET /api/users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
             var users = await _db.Users
                 .Include(u => u.Role)
                 .OrderBy(u => u.Username)
                 .AsNoTracking()
+                .Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    RoleId = u.RoleId,
+                    RoleName = u.Role.Name,
+                    CreatedAt = u.CreatedAt
+                })
                 .ToListAsync();
 
             return Ok(users);
@@ -34,15 +43,23 @@ namespace echolog.server.Controllers
 
         // GET /api/users/roles
         [HttpGet("roles")]
-        public async Task<ActionResult<IEnumerable<UserRole>>> GetRoles()
+        public async Task<ActionResult<IEnumerable<UserRoleDto>>> GetRoles()
         {
-            var roles = await _db.UserRoles.AsNoTracking().ToListAsync();
+            var roles = await _db.UserRoles
+                .AsNoTracking()
+                .Select(r => new UserRoleDto
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                })
+                .ToListAsync();
+
             return Ok(roles);
         }
 
         // POST /api/users
         [HttpPost]
-        public async Task<ActionResult<User>> Create(UserCreateDto input)
+        public async Task<ActionResult<UserDto>> Create(UserCreateDto input)
         {
             if (await _db.Users.AnyAsync(u => u.Username == input.Username))
                 return Conflict("Username already exists.");
@@ -62,14 +79,26 @@ namespace echolog.server.Controllers
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
+            var responseDto = new UserDto
+            {
+                Id = user.Id,
+                Username = user.Username,
+                RoleId = user.RoleId,
+                RoleName = validRole.Name,
+                CreatedAt = user.CreatedAt
+            };
+
+            return CreatedAtAction(nameof(GetAll), new { id = responseDto.Id }, responseDto);
         }
 
         // PUT /api/users/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, UserUpdateDto input)
         {
-            var user = await _db.Users.FindAsync(id);
+            var user = await _db.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
             if (user == null)
                 return NotFound();
 
@@ -91,8 +120,8 @@ namespace echolog.server.Controllers
                 return BadRequest("Invalid role.");
 
             user.RoleId = input.RoleId;
-
             await _db.SaveChangesAsync();
+
             return NoContent();
         }
 
@@ -109,19 +138,5 @@ namespace echolog.server.Controllers
 
             return NoContent();
         }
-    }
-    public class UserUpdateDto
-    {
-        public required string Username { get; set; }
-        public string? Password { get; set; }
-        public int RoleId { get; set; }
-    }
-
-
-    public class UserCreateDto
-    {
-        public required string Username { get; set; }
-        public required string Password { get; set; }
-        public int RoleId { get; set; }
     }
 }

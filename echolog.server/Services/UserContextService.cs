@@ -25,16 +25,11 @@ namespace echolog.server.Services
             }
         }
 
-        public string Role
-        {
-            get
-            {
-                var user = _http.HttpContext?.User;
-                var role = user?.FindFirst(ClaimTypes.Role)?.Value;
-                return role?.ToLowerInvariant() ?? "observer";
-            }
-        }
+        public string Role =>
+    _http.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value ?? "Observer";
 
-        public bool IsAdmin => Role == "admin";
+        public bool IsAdmin => Role.Equals("Admin", StringComparison.OrdinalIgnoreCase);
+        public bool IsObserver => Role.Equals("Observer", StringComparison.OrdinalIgnoreCase);
+
     }
 }
