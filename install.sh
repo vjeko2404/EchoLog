@@ -105,11 +105,22 @@ get_valid_url() {
   local input=""
   while true; do
     input=$(confirm_input "$label" "$default")
-    if [[ "$input" =~ ^https?://.+$ ]]; then
+    
+    if [[ "$input" =~ ^http://.+$ ]]; then
       echo "$input"
       return 0
+
+    elif [[ "$input" =~ ^https://.+$ ]]; then
+      echo "⚠️ HTTPS detected. You must handle your own certificates and CORS headers."
+      if ask_yes_no "Are you sure you want to use HTTPS?"; then
+        echo "$input"
+        return 0
+      else
+        continue
+      fi
+
     else
-      echo "❌ Invalid URL format. Must start with http:// or https://"
+      echo "❌ Invalid format. Must start with http:// or https://"
     fi
   done
 }
