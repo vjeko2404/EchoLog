@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/usr/bin/env bash
 
 # Full-stack installer for EchoLog app
 # Requirements: .NET SDK, Node.js, npm
@@ -33,6 +33,13 @@ ask_yes_no() {
 install_package() {
   local package="$1"
   echo "Installing $package..."
+  
+  # Strip broken or legacy keys if needed (e.g., influxdata gpg issue)
+  if ls /etc/apt/trusted.gpg.d/*.gpg 2>/dev/null | grep -q influxdata; then
+    echo "Removing unsupported InfluxData GPG key..."
+    rm -f /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg
+  fi
+
   apt-get update -qq
   apt-get install -y "$package"
 }
@@ -53,12 +60,24 @@ check_or_install() {
 }
 
 # ─────────────────────────────────────────────────────────────
-# Dependency Check
+# Dependency Check (Pi-safe)
 # ─────────────────────────────────────────────────────────────
 
-check_or_install "dotnet" "dotnet-sdk-7.0"
+# Check for .NET SDK by testing the command and confirming version exists
+if ! command -v dotnet >/dev/null 2>&1 || ! dotnet --list-sdks | grep -q '^7'; then
+  echo ".NET SDK 7.x is not installed."
+  if ask_yes_no "Do you want to install the .NET SDK manually? (required)"; then
+    echo "Please follow install instructions at https://learn.microsoft.com/dotnet/core/install/linux"
+    exit 1
+  else
+    echo "dotnet-sdk-7.0 is required. Exiting."
+    exit 1
+  fi
+fi
+
 check_or_install "node" "nodejs"
 check_or_install "npm" "npm"
+
 
 # ─────────────────────────────────────────────────────────────
 # EchoLog Configuration Prompt
