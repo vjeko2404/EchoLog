@@ -11,10 +11,16 @@ const backendUrl = 'https://localhost:5000';
 // mkcert - key - file localhost - key.pem - cert - file localhost.pem localhost
 // SSL certificates (for Vite HTTPS)
 const certPath = path.resolve(__dirname, 'certs');
-const https = {
-    key: fs.readFileSync(path.join(certPath, 'localhost-key.pem')),
-    cert: fs.readFileSync(path.join(certPath, 'localhost.pem')),
-};
+const keyPath = path.join(certPath, 'localhost-key.pem');
+const certPathFull = path.join(certPath, 'localhost.pem');
+
+let https = undefined;
+if (fs.existsSync(keyPath) && fs.existsSync(certPathFull)) {
+    https = {
+        key: fs.readFileSync(keyPath),
+        cert: fs.readFileSync(certPathFull),
+    };
+}
 
 export default defineConfig({
     plugins: [react(), tailwindcss()],
