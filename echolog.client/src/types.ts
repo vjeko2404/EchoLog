@@ -91,9 +91,8 @@ export interface ProjectFileCategory {
     id: number;
     name: string;
 }
-interface CollapsibleSectionProps {
+export interface CollapsibleSectionProps {
     title: string;
     children: React.ReactNode;
-    isOpen: boolean;
-    onToggle: () => void;
+    defaultOpen?: boolean; // optional now
 }

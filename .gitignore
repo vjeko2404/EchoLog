@@ -16,6 +16,9 @@ echolog.server/Uploads/
 # Scripts
 git-echolog.sh
 
+# VS launch profiles
+**/Properties/launchSettings.json
+
 # Build artifacts
 *.dll
 *.exe

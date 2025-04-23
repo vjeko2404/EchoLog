@@ -16,6 +16,8 @@ const AdminPanel: React.FC = () => {
 
     const [error, setError] = useState<string>('');
 
+    const [settingErrors, setSettingErrors] = useState<string>('')
+
     // --- Category State ---
     const [categories, setCategories] = useState<{ id: number, name: string }[]>([]);
     const [newCategoryName, setNewCategoryName] = useState('');

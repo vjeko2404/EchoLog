@@ -219,7 +219,7 @@ const ProjectDetailPage: React.FC = () => {
                         <textarea
                             id="shortDescription"
                             name="shortDescription"
-                            value={formData.shortDescription}
+                            value={formData.shortDescription ?? ''}
                             onChange={handleChange}
                             className="w-full p-2 bg-neutral-700 border border-neutral-500 rounded text-neutral-100"
                         />
@@ -297,6 +297,12 @@ const ProjectDetailPage: React.FC = () => {
         }
     };
 
+    const updateDetail = (data: Partial<ProjectDetail>) => {
+        setDetail(prev => {
+            if (!prev) return data as ProjectDetail; // fallback if no previous data
+            return { ...prev, ...data };
+        });
+    };
 
 
     const DetailTab: React.FC<{ initialDetail: ProjectDetail | null, projectId: number, onUpdate: (data: Partial<ProjectDetail>) => void }> = ({ initialDetail, projectId, onUpdate }) => {
@@ -517,7 +523,7 @@ const ProjectDetailPage: React.FC = () => {
             prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
         );
     };
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const toggleSelectAll = () => {
         if (selectedFileIds.length === filteredFiles.length) {
             setSelectedFileIds([]);
@@ -597,9 +603,9 @@ const ProjectDetailPage: React.FC = () => {
 
     const FilesTab: React.FC<{
         files: ProjectFile[],
-        onUpload: (file: File, description: string, categoryId: number) => void,
+        onUpload: (file: File[], description: string, categoryId: number) => void,
         onDelete: (id: number) => void
-    }>
+    }>// eslint-disable-next-line @typescript-eslint/no-unused-vars
         = ({ files, onUpload, onDelete }) => {
             const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
             const [description, setDescription] = useState('');
@@ -898,7 +904,14 @@ const ProjectDetailPage: React.FC = () => {
                     />
                 )}
 
-                {activeTab === 'detail' && <DetailTab initialDetail={detail} projectId={projectId} onUpdate={setDetail} />}
+                {activeTab === 'detail' && (
+                    <DetailTab
+                        initialDetail={detail}
+                        projectId={projectId}
+                        onUpdate={updateDetail}
+                    />
+                )}
+
                 {activeTab === 'notes' && <NotesTab notes={notes} onAdd={handleAddNote} onDelete={handleDeleteNote} />}
                 {activeTab === 'files' && <FilesTab files={files} onUpload={handleFileUpload} onDelete={handleDeleteFile} />}
 
