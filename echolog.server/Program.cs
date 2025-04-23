@@ -5,8 +5,10 @@ using echolog.server.Data;
 using echolog.server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+var corsOrigin = Environment.GetEnvironmentVariable("CORS_ORIGIN");
 
 // ──────────────────────────────────────────────────────────────
 // Configuration
@@ -51,10 +53,16 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddCors(opt =>
+builder.Services.AddCors(options =>
 {
-    opt.AddDefaultPolicy(policy =>
-        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    options.AddPolicy("CorsPolicy", builder =>
+    {
+        builder
+            .WithOrigins(corsOrigin)
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
 });
 
 // ──────────────────────────────────────────────────────────────
